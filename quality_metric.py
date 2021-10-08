@@ -10,9 +10,9 @@ Original file is located at
 import numpy as np
 def score(y_trues, y_preds):
     '''
-    Версия 1:
+    Версия 1.2:
 
-    На вход подается numpy массив y_trues, y_preds
+    На вход подаются многомерные списки y_trues, y_preds
 
     Для каждой манипуляции в каждом тексте в y_trues ищем расстояние до ближайшей манипуляции
     в соответствующем тексте y_preds (пока без учёта длины пересечения)
