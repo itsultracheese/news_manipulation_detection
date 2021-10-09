@@ -37,7 +37,7 @@ def get_word(w, lan=LANG):
 
 def text2vec(glove : dict, text_tokenized: list()):
     vectors = [glove[word] if word in glove.keys() else np.zeros((300)) for word in text_tokenized]
-    vectors = np.concatenate(vectors, axis=-1)
+    vectors = np.stack(vectors, axis=0)
     return vectors
     
 def path2dataset(path_train_articles, path_train_labels):
@@ -52,4 +52,3 @@ def path2dataset(path_train_articles, path_train_labels):
         vectors = text2vec(glove,text)
         V.append(vectors)
     return V, targets
-    

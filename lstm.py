@@ -22,7 +22,7 @@ class LSTM_tagger(nn.Module):
         
         self.activation = nn.ELU() #HARDCODE
         
-        self.FF = nn.Sequential(nn.Linear(in_features=hidden_size, out_features=3), 
+        self.FF = nn.Sequential(nn.Linear(in_features=hidden_size, out_features=2), 
                                 self.activation, 
                                 nn.Softmax(dim=-1))
         
@@ -59,6 +59,8 @@ class Shell(pl.LightningModule):
             self.model.eval()
         
         X, tags = batch
+        X = X.float()
+        tags = tags.long()
         probabilities, output = self.model(X)
         
         loss = self.lossfunc(probabilities.view(-1,probabilities.shape[-1]), tags.view(-1))
@@ -68,11 +70,11 @@ class Shell(pl.LightningModule):
         if mode == 'train':
             return loss
     
-    def train_step(self, batch, step):
+    def training_step(self, batch, step):
         to_print = True if step % self.print_every_n == 0 else False
-        loss = step(batch, step, mode='train', to_print=to_print)
+        loss = self.step(batch, step, mode='train', to_print=to_print)
         return loss
     
     def validation_step(self, batch, step):
         to_print = True if step % self.print_every_n == 0 else False
-        step(batch, step, mode='val', to_print=to_print)
+        self.step(batch, step, mode='val', to_print=to_print)
